@@ -1,6 +1,4 @@
-#! python3
-# readCensusExcel.py - Tabulates population and number of census tracts for 
-# each county.
+
 
 import openpyxl, pprint
 print('Abrindo a planilha...')
