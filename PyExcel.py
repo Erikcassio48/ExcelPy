@@ -3,34 +3,37 @@
 # each county.
 
 import openpyxl, pprint
-print('Opening workbook...')
+print('Abrindo a planilha...')
 wb = openpyxl.load_workbook('c:\Venv\dados.xlsx')
 sheet = wb.get_sheet_by_name('Plan1')
-dadosregionais = {}
+dadosregionais = {} #Criando a chave
 
 row_count = sheet.max_row
 column_count = sheet.max_column
-# Fill in countyData with each county's population and tracts.
-print('Reading rows...')
+
+
+print('Lendo as linhas...')
 for row in range(2, row_count + 1):
-    # Each row in the spreadsheet has data for one census tract.
+    # Selecionamos as colunas B,C e D e criamos o laço For.
     estados  = sheet['B' + str(row)].value
     produtos = sheet['C' + str(row)].value
     vendas    = sheet['D' + str(row)].value
 
-    # Make sure the key for this state exists.
+    # Criamos as chaves para os estados.
     dadosregionais.setdefault(estados, {})
-    # Make sure the key for this county in this state exists.
-    dadosregionais[estados].setdefault(produtos, {'tracts': 0, 'vendas': 0})
+    
+   
+    dadosregionais[estados].setdefault(produtos, {'Quantidade': 0, 'vendas': 0})
 
-    # Each row represents one census tract, so increment by one.
-    dadosregionais[estados][produtos]['tracts'] += 1
-    # Increase the county pop by the pop in this census tract.
+    # Cada linha representa um produto vendido, somamos ao produto
+    dadosregionais[estados][produtos]['Quantidade'] += 1
+
+    # Somamos a quantidade de vendas do produto por estado
     dadosregionais[estados][produtos]['vendas'] += int(vendas)
 
-# Open a new text file and write the contents of countyData to it.
-print('Writing results...')
-resultFile = open('census2010.py', 'w')
+# Abrimos um arquivo vendas.py com o resultado.
+print('Escrevendo Resultados')
+resultFile = open('vendas.py', 'w')
 resultFile.write('allData = ' + pprint.pformat(dadosregionais))
 resultFile.close()
 print('Done.')
